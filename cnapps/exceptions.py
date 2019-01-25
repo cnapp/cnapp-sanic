@@ -24,6 +24,14 @@ class ConfigurationError(CnappsError):
         self.message = message
         self.status_code = 500
 
+
+class APIError(CnappsError):
+    """Base error for REST API."""
+    def __init__(self, message, status_code=500):
+        self.message = message
+        self.status_code = status_code
+
+
 class DatabaseError(CnappsError):
 
     def __init__(self, message):

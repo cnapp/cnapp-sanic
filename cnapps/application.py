@@ -21,8 +21,8 @@ import sanic_openapi
 from cnapps.api import health as health
 from cnapps.api import version as version
 from cnapps.middleware.metrics import prometheus
+from cnapps import errors
 from cnapps import version as app_version
-
 
 LOGGER = logging.getLogger(__name__)
 
@@ -37,6 +37,7 @@ def creates_app():
     LOGGER.info("Create application %s", app_version.RELEASE)
     app = sanic.Sanic(__name__)
     app.static('/static', './static')
+    errors.add_exceptions_handlers(app)
     app.blueprint(version.bp)
     app.blueprint(health.bp)
     setup_openapi(app)
