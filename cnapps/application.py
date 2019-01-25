@@ -15,6 +15,7 @@
 import logging
 
 import sanic
+import sanic_openapi
 
 from cnapps.api import health as health
 from cnapps.api import version as version
@@ -34,7 +35,19 @@ def creates_app():
     LOGGER.info("Create application %s", app_version.RELEASE)
     app = sanic.Sanic()
     app.static('/static', './static')
+    setup_openapi(app)
     app.blueprint(version.bp)
     app.blueprint(health.bp)
 
     return app
+
+
+def setup_openapi(app):
+    app.blueprint(sanic_openapi.openapi_blueprint)
+    app.blueprint(sanic_openapi.swagger_blueprint)
+    app.config.API_VERSION = app_version.RELEASE
+    app.config.API_TITLE = 'CNAPP API'
+    app.config.API_DESCRIPTION = 'CNAPP API'
+    app.config.API_TERMS_OF_SERVICE = 'Use with caution!'
+    app.config.API_PRODUCES_CONTENT_TYPES = ['application/json']
+    app.config.API_CONTACT_EMAIL = 'nicolas.lamirault@gmail.com'

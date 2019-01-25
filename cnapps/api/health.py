@@ -15,6 +15,7 @@
 import logging
 
 import sanic
+from sanic_openapi import doc
 
 from cnapps.api import commons
 from cnapps import version
@@ -26,6 +27,8 @@ bp = sanic.Blueprint("health", url_prefix='/health')
 
 
 @bp.route("/", methods=["GET"])
+@doc.summary("Health Status API")
+@doc.produces({"status": str})
 async def version_status(request):
     """Display application version.
 

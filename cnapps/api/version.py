@@ -15,6 +15,8 @@
 import logging
 
 import sanic
+from sanic.response import json
+from sanic_openapi import doc
 
 from cnapps.api import commons
 from cnapps import version
@@ -25,7 +27,9 @@ LOGGER = logging.getLogger(__name__)
 bp = sanic.Blueprint("version", url_prefix='/version')
 
 
-@bp.route("/", methods=["GET"])
+@bp.route("", methods=["GET"])
+@doc.summary("Application version API")
+@doc.produces({"version": str})
 async def version_status(request):
     """Display application version.
 
